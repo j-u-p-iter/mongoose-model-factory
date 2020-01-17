@@ -1,6 +1,6 @@
 {
   "name": "@j.u.p.iter/mongoose-model-factory",
-  "version": "0.0.1",
+  "version": "0.0.0-semantically-released",
   "description": "Mongoose model factory",
   "keywords": [
     "mongoose",
