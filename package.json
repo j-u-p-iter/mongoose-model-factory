@@ -1,0 +1,33 @@
+{
+  "name": "@j.u.p.iter/mongoose-model-factory",
+  "version": "0.0.0-semantically-released",
+  "description": "Mongoose model factory",
+  "keywords": [
+    "mongoose",
+    "model"
+  ],
+  "main": "dist/lib/mongoose-model-factory.cjs.js",
+  "module": "dist/lib/mongoose-model-factory.cjs.js",
+  "typings": "dist/types",
+  "repository": "git@github.com:j-u-p-iter/mongoose-model-factory.git",
+  "author": "Leontyev Kirill (j.u.p.iter) <pn79122821224@gmail.com> (http://j-u-p-iter.ru/)",
+  "license": "MIT",
+  "devDependencies": {
+    "@j.u.p.iter/jupiter-scripts": "^1.14.1",
+    "@j.u.p.iter/mongoose-db-provider": "^1.0.0",
+    "@types/mongoose": "^5.5.41",
+    "mongoose": "^5.8.7",
+    "mongoose-unique-validator": "^2.0.3"
+  },
+  "scripts": {
+    "commit": "jupiter-scripts precommit --allowJs",
+    "build": "jupiter-scripts build --bundle",
+    "start": "yarn run build --watch",
+    "lint": "jupiter-scripts lint --format codeFrame",
+    "lint:fix": "yarn run lint --fix",
+    "test": "jupiter-scripts test"
+  },
+  "peerDependencies": {
+    "mongoose": ">=5.8.7"
+  }
+}
