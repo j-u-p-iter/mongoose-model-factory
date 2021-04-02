@@ -89,6 +89,100 @@ describe("createModel", () => {
       expect(users[1].name).toBe("Martin");
       expect(users[2].name).toBe("Jack");
     });
+
+    describe("with sorting by name", () => {
+      it("returns all documents, sorted in ascending order", async () => {
+        await userModel.insertMany([
+          { name: "Joe", role: "admin" },
+          { name: "Bob", role: "user" },
+          { name: "Jane", role: "user" },
+          { name: "Martin", role: "admin" },
+          { name: "Jack", role: "admin" }
+        ]);
+
+        const totalUsersCount = await userModel.getTotalCount();
+
+        expect(totalUsersCount).toBe(5);
+
+        const users = await userModel.readAllBy(
+          { role: "admin" },
+          { sortBy: "name" }
+        );
+
+        expect(users.length).toBe(3);
+
+        expect(users[0].name).toBe("Jack");
+        expect(users[1].name).toBe("Joe");
+        expect(users[2].name).toBe("Martin");
+      });
+    });
+
+    describe("with descending sortDir", () => {
+      it("returns all documents, sorted in descending order", async () => {
+        await userModel.insertMany([
+          { name: "Joe", role: "admin" },
+          { name: "Bob", role: "user" },
+          { name: "Jane", role: "user" },
+          { name: "Martin", role: "admin" },
+          { name: "Jack", role: "admin" }
+        ]);
+
+        const users = await userModel.readAllBy(
+          { role: "admin" },
+          { sortBy: "name", sortDir: "desc" }
+        );
+
+        expect(users[0].name).toBe("Martin");
+        expect(users[1].name).toBe("Joe");
+        expect(users[2].name).toBe("Jack");
+      });
+    });
+
+    describe("with limit equal to 2", () => {
+      it("returns 2 documents", async () => {
+        await userModel.insertMany([
+          { name: "Joe", role: "admin" },
+          { name: "Bob", role: "user" },
+          { name: "Jane", role: "user" },
+          { name: "Martin", role: "admin" },
+          { name: "Jack", role: "admin" }
+        ]);
+
+        const users = await userModel.readAllBy(
+          { role: "admin" },
+          { sortBy: "name", limit: 2 }
+        );
+
+        expect(users.length).toBe(2);
+
+        expect(users[0].name).toBe("Jack");
+        expect(users[1].name).toBe("Joe");
+      });
+    });
+
+    describe("with offset equals to 2 and limit equals to 1", () => {
+      it("returns 1 document", async () => {
+        await userModel.insertMany([
+          { name: "Joe", role: "admin" },
+          { name: "Bob", role: "user" },
+          { name: "Jane", role: "user" },
+          { name: "Martin", role: "admin" },
+          { name: "Jack", role: "admin" }
+        ]);
+
+        const users = await userModel.readAllBy(
+          { role: "admin" },
+          {
+            sortBy: "name",
+            limit: 1,
+            offset: 2
+          }
+        );
+
+        expect(users.length).toBe(1);
+        expect(users[0].name).toBe("Martin");
+      });
+    });
   });
 
   describe("readById", () => {

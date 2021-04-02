@@ -41,7 +41,32 @@ export const createModel = <DocType>(
     return result;
   };
 
-  const readAllBy = (data: any) => model.find(data);
+  const readAllBy = (
+    data: any,
+    {
+      sortBy,
+      limit = 0,
+      sortDir = "asc",
+      offset = 0
+    }: {
+      sortBy?: string;
+      sortDir?: string;
+      limit?: number;
+      offset?: number;
+    } = {}
+  ) => {
+    let result = model.find(data);
+
+    if (limit) {
+      result = result.limit(limit).skip(offset);
+    }
+
+    if (sortBy) {
+      result = result.sort({ [sortBy]: sortDir });
+    }
+
+    return result;
+  };
 
   const readById = (id: number) => model.findById(id);
 
