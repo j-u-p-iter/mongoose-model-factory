@@ -7,8 +7,17 @@ describe("createModel", () => {
   let userModel;
   let UserSchema;
   let dbProvider;
+  let usersData;
 
   beforeAll(async () => {
+    usersData = [
+      { name: "Joe", role: "admin" },
+      { name: "Bob", role: "user" },
+      { name: "Jane", role: "user" },
+      { name: "Martin", role: "admin" },
+      { name: "Jack", role: "admin" }
+    ];
+
     dbProvider = createMongooseDBProvider("mongodb://localhost:27017/test");
 
     await dbProvider.connect();
@@ -56,14 +65,6 @@ describe("createModel", () => {
 
   describe("getTotalCount", () => {
     it("returns correct documents count", async () => {
-      const usersData = [
-        { name: "Joe" },
-        { name: "Bob" },
-        { name: "Jane" },
-        { name: "Martin" },
-        { name: "Jack" }
-      ];
-
       await userModel.insertMany(usersData);
 
       const totalCount = await userModel.getTotalCount();
@@ -74,13 +75,7 @@ describe("createModel", () => {
 
   describe("readAllBy", () => {
     it("reads data properly", async () => {
-      await userModel.insertMany([
-        { name: "Joe", role: "admin" },
-        { name: "Bob", role: "user" },
-        { name: "Jane", role: "user" },
-        { name: "Martin", role: "admin" },
-        { name: "Jack", role: "admin" }
-      ]);
+      await userModel.insertMany(usersData);
 
       const users = await userModel.readAllBy({ role: "admin" });
 
@@ -92,13 +87,7 @@ describe("createModel", () => {
 
     describe("with sorting by name", () => {
       it("returns all documents, sorted in ascending order", async () => {
-        await userModel.insertMany([
-          { name: "Joe", role: "admin" },
-          { name: "Bob", role: "user" },
-          { name: "Jane", role: "user" },
-          { name: "Martin", role: "admin" },
-          { name: "Jack", role: "admin" }
-        ]);
+        await userModel.insertMany(usersData);
 
         const totalUsersCount = await userModel.getTotalCount();
 
@@ -119,13 +108,7 @@ describe("createModel", () => {
 
     describe("with descending sortDir", () => {
       it("returns all documents, sorted in descending order", async () => {
-        await userModel.insertMany([
-          { name: "Joe", role: "admin" },
-          { name: "Bob", role: "user" },
-          { name: "Jane", role: "user" },
-          { name: "Martin", role: "admin" },
-          { name: "Jack", role: "admin" }
-        ]);
+        await userModel.insertMany(usersData);
 
         const users = await userModel.readAllBy(
           { role: "admin" },
@@ -140,13 +123,7 @@ describe("createModel", () => {
 
     describe("with limit equal to 2", () => {
       it("returns 2 documents", async () => {
-        await userModel.insertMany([
-          { name: "Joe", role: "admin" },
-          { name: "Bob", role: "user" },
-          { name: "Jane", role: "user" },
-          { name: "Martin", role: "admin" },
-          { name: "Jack", role: "admin" }
-        ]);
+        await userModel.insertMany(usersData);
 
         const users = await userModel.readAllBy(
           { role: "admin" },
@@ -162,13 +139,7 @@ describe("createModel", () => {
 
     describe("with offset equals to 2 and limit equals to 1", () => {
       it("returns 1 document", async () => {
-        await userModel.insertMany([
-          { name: "Joe", role: "admin" },
-          { name: "Bob", role: "user" },
-          { name: "Jane", role: "user" },
-          { name: "Martin", role: "admin" },
-          { name: "Jack", role: "admin" }
-        ]);
+        await userModel.insertMany(usersData);
 
         const users = await userModel.readAllBy(
           { role: "admin" },
@@ -187,13 +158,7 @@ describe("createModel", () => {
 
   describe("readById", () => {
     it("reads data properly", async () => {
-      await userModel.insertMany([
-        { name: "Joe", role: "admin" },
-        { name: "Bob", role: "user" },
-        { name: "Jane", role: "user" },
-        { name: "Martin", role: "admin" },
-        { name: "Jack", role: "admin" }
-      ]);
+      await userModel.insertMany(usersData);
 
       const userByName = await userModel.readOne({ name: "Bob" });
 
@@ -205,13 +170,7 @@ describe("createModel", () => {
 
   describe("update", () => {
     it("updates document by id", async () => {
-      await userModel.insertMany([
-        { name: "Joe", role: "admin" },
-        { name: "Bob", role: "user" },
-        { name: "Jane", role: "user" },
-        { name: "Martin", role: "admin" },
-        { name: "Jack", role: "admin" }
-      ]);
+      await userModel.insertMany(usersData);
 
       const userByName = await userModel.readOne({ name: "Jane" });
 
@@ -226,13 +185,7 @@ describe("createModel", () => {
 
   describe("deleteOne", () => {
     it("deletes document by id", async () => {
-      await userModel.insertMany([
-        { name: "Joe", role: "admin" },
-        { name: "Bob", role: "user" },
-        { name: "Jane", role: "user" },
-        { name: "Martin", role: "admin" },
-        { name: "Jack", role: "admin" }
-      ]);
+      await userModel.insertMany(usersData);
 
       const userByName = await userModel.readOne({ name: "Martin" });
 
@@ -247,13 +200,7 @@ describe("createModel", () => {
 
   describe("deleteAll", () => {
     it("deletes all documents", async () => {
-      await userModel.insertMany([
-        { name: "Joe", role: "admin" },
-        { name: "Bob", role: "user" },
-        { name: "Jane", role: "user" },
-        { name: "Martin", role: "admin" },
-        { name: "Jack", role: "admin" }
-      ]);
+      await userModel.insertMany(usersData);
 
       let totalUsersCount = await userModel.getTotalCount();
 
@@ -270,13 +217,7 @@ describe("createModel", () => {
   describe("read", () => {
     describe("with default params", () => {
       it("returns all documents without sorting", async () => {
-        await userModel.insertMany([
-          { name: "Joe", role: "admin" },
-          { name: "Bob", role: "user" },
-          { name: "Jane", role: "user" },
-          { name: "Martin", role: "admin" },
-          { name: "Jack", role: "admin" }
-        ]);
+        await userModel.insertMany(usersData);
 
         const users = await userModel.read();
 
@@ -292,13 +233,7 @@ describe("createModel", () => {
 
     describe("with sorting by name", () => {
       it("returns all documents, sorted in ascending order", async () => {
-        await userModel.insertMany([
-          { name: "Joe", role: "admin" },
-          { name: "Bob", role: "user" },
-          { name: "Jane", role: "user" },
-          { name: "Martin", role: "admin" },
-          { name: "Jack", role: "admin" }
-        ]);
+        await userModel.insertMany(usersData);
 
         const totalUsersCount = await userModel.getTotalCount();
 
@@ -318,13 +253,7 @@ describe("createModel", () => {
 
     describe("with descending sortDir", () => {
       it("returns all documents, sorted in descending order", async () => {
-        await userModel.insertMany([
-          { name: "Joe", role: "admin" },
-          { name: "Bob", role: "user" },
-          { name: "Jane", role: "user" },
-          { name: "Martin", role: "admin" },
-          { name: "Jack", role: "admin" }
-        ]);
+        await userModel.insertMany(usersData);
 
         const users = await userModel.read({ sortBy: "name", sortDir: "desc" });
 
@@ -338,13 +267,7 @@ describe("createModel", () => {
 
     describe("with limit equal to 2", () => {
       it("returns 2 documents", async () => {
-        await userModel.insertMany([
-          { name: "Joe", role: "admin" },
-          { name: "Bob", role: "user" },
-          { name: "Jane", role: "user" },
-          { name: "Martin", role: "admin" },
-          { name: "Jack", role: "admin" }
-        ]);
+        await userModel.insertMany(usersData);
 
         const users = await userModel.read({ sortBy: "name", limit: 2 });
 
@@ -356,13 +279,7 @@ describe("createModel", () => {
 
     describe("with offset equal to 3", () => {
       it("returns 2 documents", async () => {
-        await userModel.insertMany([
-          { name: "Joe", role: "admin" },
-          { name: "Bob", role: "user" },
-          { name: "Jane", role: "user" },
-          { name: "Martin", role: "admin" },
-          { name: "Jack", role: "admin" }
-        ]);
+        await userModel.insertMany(usersData);
 
         const users = await userModel.read({
           sortBy: "name",
