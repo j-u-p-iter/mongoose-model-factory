@@ -1,0 +1,28 @@
+version: 2.1
+
+jobs:
+  validate:
+    steps:
+    - checkout
+    - run: jupiter-scripts validate
+
+  build:
+    steps:
+      - checkout
+      - run: yarn run build
+
+  deploy:
+    steps:
+      - checkout
+      - run: jupiter-scripts deploy
+
+workflows:
+  version: 2
+  validate-build-deploy:
+    jobs:
+      - validate
+      - build
+      - deploy:
+          context: package
+          requires:
+            - build
