@@ -1,10 +1,7 @@
-import mongoose, { Document } from "mongoose";
+import mongoose, { Document, Schema } from "mongoose";
 import uniqueValidator from "mongoose-unique-validator";
 
-export const createModel = <DocType>(
-  modelName: string,
-  schema: mongoose.Schema
-) => {
+export const createModel = <DocType>(modelName: string, schema: Schema) => {
   schema.plugin(uniqueValidator);
 
   const model = mongoose.model<DocType & Document>(modelName, schema);
