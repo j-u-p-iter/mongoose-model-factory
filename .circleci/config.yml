@@ -2,16 +2,25 @@ version: 2.1
 
 jobs:
   validate:
+    docker:
+      - image: alpine
+
     steps:
     - checkout
     - run: jupiter-scripts validate
 
   build:
+    docker:
+      - image: alpine
+
     steps:
       - checkout
       - run: yarn run build
 
   deploy:
+    docker:
+      - image: alpine
+
     steps:
       - checkout
       - run: jupiter-scripts deploy
