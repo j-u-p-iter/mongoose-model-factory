@@ -12,7 +12,6 @@ jobs:
     steps:
     - checkout
     - run: yarn install
-    - run: mongodb
     - run: yarn run validate
 
   build:
