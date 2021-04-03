@@ -1,9 +1,12 @@
 version: 2.1
 
+aliases:
+  - &docker
+    - image: circleci/openjdk:8-jdk-node-browsers
+
 jobs:
   validate:
-    docker:
-      - image: alpine
+    docker: *docker
 
     steps:
     - checkout
@@ -11,16 +14,14 @@ jobs:
     - run: jupiter-scripts validate
 
   build:
-    docker:
-      - image: alpine
+    docker: *docker
 
     steps:
       - checkout
       - run: yarn run build
 
   deploy:
-    docker:
-      - image: alpine
+    docker: *docker
 
     steps:
       - checkout
