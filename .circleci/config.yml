@@ -14,29 +14,21 @@ jobs:
     - run: yarn install
     - run: yarn run validate
 
-  build:
-    docker: *docker
-
-    steps:
-      - checkout
-      - run: yarn install
-      - run: yarn run build
-
   deploy:
     docker: *docker
 
     steps:
       - checkout
       - run: yarn install
+      - run: yarn run build
       - run: yarn run deploy
 
 workflows:
   version: 2
-  validate-build-deploy:
+  validate-and-deploy:
     jobs:
       - validate
-      - build
       - deploy:
           context: package
           requires:
-            - build
+            - validate
