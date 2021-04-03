@@ -11,7 +11,7 @@ jobs:
     steps:
     - checkout
     - run: yarn install
-    - run: jupiter-scripts validate
+    - run: yarn run validate
 
   build:
     docker: *docker
@@ -25,7 +25,7 @@ jobs:
 
     steps:
       - checkout
-      - run: jupiter-scripts deploy
+      - run: yarn run deploy
 
 workflows:
   version: 2
