@@ -3,6 +3,7 @@ version: 2.1
 aliases:
   - &docker
     - image: circleci/openjdk:8-jdk-node-browsers
+    - image: circleci/mongo:latest 
 
 jobs:
   validate:
@@ -11,6 +12,7 @@ jobs:
     steps:
     - checkout
     - run: yarn install
+    - run: mongodb
     - run: yarn run validate
 
   build:
