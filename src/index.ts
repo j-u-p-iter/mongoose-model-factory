@@ -1,1 +1,1 @@
-export { createModel } from "./createModel";
+export * from "./createModel";
