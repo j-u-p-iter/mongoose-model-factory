@@ -64,12 +64,24 @@ describe("createModel", () => {
   });
 
   describe("getTotalCount", () => {
-    it("returns correct documents count", async () => {
-      await userModel.insertMany(usersData);
+    describe("without selector", () => {
+      it("returns all items", async () => {
+        await userModel.insertMany(usersData);
 
-      const totalCount = await userModel.getTotalCount();
+        const totalCount = await userModel.getTotalCount();
 
-      expect(totalCount).toBe(usersData.length);
+        expect(totalCount).toBe(usersData.length);
+      });
+    });
+
+    describe("with selector", () => {
+      it("returns items appropriate to selector", async () => {
+        await userModel.insertMany(usersData);
+
+        const totalCount = await userModel.getTotalCount({ role: "admin" });
+
+        expect(totalCount).toBe(3);
+      });
     });
   });
 

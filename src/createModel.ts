@@ -15,7 +15,7 @@ export const createModel = <DocType>(
 
   const readAll = () => model.find();
 
-  const getTotalCount = () => model.estimatedDocumentCount();
+  const getTotalCount = (selector: any = {}) => model.countDocuments(selector);
 
   const read = ({
     sortBy,
